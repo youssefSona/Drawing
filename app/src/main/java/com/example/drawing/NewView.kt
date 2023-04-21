@@ -11,6 +11,8 @@ import kotlin.random.Random
 
 class CustomView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
+    private var dotsCount = 0
+
     private val dotRadius = 5f // Radius of the dot
     private val dotPaint = Paint().apply {
         color = Color.BLACK // Color of the dot
@@ -33,12 +35,14 @@ class CustomView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if(dotsCount >= 4) return false
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
 
                 dots.add(
                     Pair(event.x, event.y)
                 ) // Add the coordinates of the clicked point to the list
+                dotsCount++
                 invalidate() // Redraw the canvas to show the new dot
 
                 if (dots.size > 3) {
