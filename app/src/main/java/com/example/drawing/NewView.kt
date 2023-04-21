@@ -11,7 +11,7 @@ import kotlin.random.Random
 
 class CustomView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
-    private val dotRadius = 10f // Radius of the dot
+    private val dotRadius = 5f // Radius of the dot
     private val dotPaint = Paint().apply {
         color = Color.BLACK // Color of the dot
         isAntiAlias = true // Smooth edges of the dot
@@ -41,32 +41,33 @@ class CustomView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
                 ) // Add the coordinates of the clicked point to the list
                 invalidate() // Redraw the canvas to show the new dot
 
-                if (dots.size >= 3) {
+                if (dots.size > 3) {
                     val lastDot = dots[dots.size - 1]
-                    val secondLastDot = dots[Random.nextInt(0, 3)] //Random.nextInt(0, 3)
+                    val secondLastDot = dots[Random.nextInt(0, 3)]
                     val xMid = (lastDot.first + secondLastDot.first) / 2
                     val yMid = (lastDot.second + secondLastDot.second) / 2
                     dots.add(Pair(xMid, yMid)) // Add the middle point as a new dot to the list
                     invalidate() // Redraw the canvas to show the new dot
 
+                    var i = 0
                     Thread {
-                        for (i in 1..2000) {
-                            while (true) {
-                                val lastDot = dots[dots.size - 1]
-                                val secondLastDot =
-                                    dots[Random.nextInt(0, 3)] // Choose a random dot from the list
-                                val xMid = (lastDot.first + secondLastDot.first) / 2
-                                val yMid = (lastDot.second + secondLastDot.second) / 2
-                                dots.add(
-                                    Pair(
-                                        xMid,
-                                        yMid
-                                    )
-                                ) // Add the middle point as a new dot to the list
-                                invalidate() // Redraw the canvas to show the new dot
-                                Thread.sleep(50) // Wait for 1 second before adding the next dot
-                            }
+                        while (i < 25000) {
+                            val lastDot = dots[dots.size - 1]
+                            val secondLastDot =
+                                dots[Random.nextInt(0, 3)]
+                            val xMid = (lastDot.first + secondLastDot.first) / 2
+                            val yMid = (lastDot.second + secondLastDot.second) / 2
+                            dots.add(
+                                Pair(
+                                    xMid,
+                                    yMid
+                                )
+                            ) // Add the middle point as a new dot to the list
+                            invalidate() // Redraw the canvas to show the new dot
+                            Thread.sleep(40)
+                            i++
                         }
+
                     }.start()
                 }
 
